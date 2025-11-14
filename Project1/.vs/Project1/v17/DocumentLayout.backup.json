@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\mlenois\\Documents\\GitHub\\steganographie\\Project1\\",
+  "WorkspaceRootPath": "C:\\Users\\lharispe\\Documents\\GitHub\\steganographie\\Project1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{30B56205-9940-42E8-B568-C9D7D04D956A}|Project1\\Project1.vcxproj|C:\\Users\\mlenois\\Documents\\GitHub\\steganographie\\Project1\\Project1\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{30B56205-9940-42E8-B568-C9D7D04D956A}|Project1\\Project1.vcxproj|C:\\Users\\lharispe\\Documents\\GitHub\\steganographie\\Project1\\Project1\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{30B56205-9940-42E8-B568-C9D7D04D956A}|Project1\\Project1.vcxproj|solutionrelative:Project1\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Main.cpp",
-              "DocumentMoniker": "C:\\Users\\mlenois\\Documents\\GitHub\\steganographie\\Project1\\Project1\\Main.cpp",
+              "DocumentMoniker": "C:\\Users\\lharispe\\Documents\\GitHub\\steganographie\\Project1\\Project1\\Main.cpp",
               "RelativeDocumentMoniker": "Project1\\Main.cpp",
-              "ToolTip": "C:\\Users\\mlenois\\Documents\\GitHub\\steganographie\\Project1\\Project1\\Main.cpp",
-              "RelativeToolTip": "Project1\\Main.cpp",
-              "ViewState": "AgIAAFEAAAAAAAAAAAAAAF0AAAArAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\lharispe\\Documents\\GitHub\\steganographie\\Project1\\Project1\\Main.cpp*",
+              "RelativeToolTip": "Project1\\Main.cpp*",
+              "ViewState": "AgIAACwBAAAAAAAAAAAiwEIBAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-11-12T13:21:04.381Z",
               "EditorCaption": ""
