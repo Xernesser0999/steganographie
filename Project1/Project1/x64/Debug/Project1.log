@@ -1,5 +1,8 @@
 ﻿  Main.cpp
-C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(303,43): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(330,47): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(332,47): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(499,47): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(501,47): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(503,48): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(507,43): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(455,13): warning C4101: 'imgH' : variable locale non référencée
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(454,13): warning C4101: 'imgW' : variable locale non référencée
   Project1.vcxproj -> C:\Users\lharispe\Documents\GitHub\steganographie\Project1\x64\Debug\Project1.exe
