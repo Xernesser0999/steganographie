@@ -39,7 +39,7 @@ std::wstring ExtractHiddenMessage(const unsigned char* buffer, size_t size) {
             // Lire la longueur (2 octets little endian)
             if (i + 3 >= size) return L"";
 
-            uint16_t textLen = buffer[i + 2] | (buffer[i + 3] << 8);
+            uint16_t textLen = (buffer[i + 2] << 8) | buffer[i + 3];
             size_t textStart = i + 4;
 
             if (textStart + textLen <= size) {
@@ -134,13 +134,28 @@ bool InsertFFFeAndSave(const wchar_t* inputFile, const wchar_t* outputFile, size
         return false;
     }
 
-    // 2. Check if FF FE already exists
-    if (ContainsFFFE(originalData, originalSize)) {
-        delete[] originalData;
-        MessageBox(NULL, L"The sequence FF FE already exists in the file!",
-            L"Information", MB_OK | MB_ICONINFORMATION);
-        return false;
+    // 2. Chercher si FF FE existe déjà
+    size_t existingPos = SIZE_MAX;
+    for (size_t i = 0; i < originalSize - 1; ++i) {
+        if (originalData[i] == 0xFF && originalData[i + 1] == 0xFE) {
+            existingPos = i;
+            break;
+        }
     }
+
+    // Si trouvé, supprimer l'ancien message
+    if (existingPos != SIZE_MAX) {
+        uint16_t oldLen = (originalData[existingPos + 2] << 8) | originalData[existingPos + 3];
+        size_t oldBlockSize = 4 + oldLen;
+
+        memmove(originalData + existingPos,
+            originalData + existingPos + oldBlockSize,
+            originalSize - (existingPos + oldBlockSize));
+
+        originalSize -= oldBlockSize;
+        insertPos = existingPos; // reuse same position
+    }
+
 
     // 3. Limit insertion position
     if (insertPos > originalSize) {
@@ -156,6 +171,7 @@ bool InsertFFFeAndSave(const wchar_t* inputFile, const wchar_t* outputFile, size
         unsigned char c = static_cast<unsigned char>(userText[i] & 0xFF);
         asciiText[i] = static_cast<char>((c + 3) & 0xFF); // ajout de 3 et masque sur 1 octet
     }
+
     asciiText[textLen] = '\0';
 
     size_t textBytes = textLen;  // Maintenant c'est 1 octet par caractère
@@ -172,8 +188,8 @@ bool InsertFFFeAndSave(const wchar_t* inputFile, const wchar_t* outputFile, size
     newData[insertPos] = 0xFF;
     newData[insertPos + 1] = 0xFE;
     uint16_t textLen16 = static_cast<uint16_t>(textBytes);
-    newData[insertPos + 2] = textLen16 & 0xFF;
-    newData[insertPos + 3] = (textLen16 >> 8) & 0xFF;
+    newData[insertPos + 2] = (textLen >> 8) & 0xFF;
+    newData[insertPos + 3] = textLen16 & 0xFF;
 
     // 8. Insert ASCII text after FF FE
     memcpy(&newData[insertPos + 4], asciiText, textBytes);
