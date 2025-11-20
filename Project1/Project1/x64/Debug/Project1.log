@@ -1,8 +1,8 @@
 ﻿  Main.cpp
-C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(515,47): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(517,47): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(519,48): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(523,43): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(471,13): warning C4101: 'imgH' : variable locale non référencée
-C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(470,13): warning C4101: 'imgW' : variable locale non référencée
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(327,47): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(329,47): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(331,48): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(335,43): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(283,13): warning C4101: 'imgH' : variable locale non référencée
+C:\Users\lharispe\Documents\GitHub\steganographie\Project1\Project1\Main.cpp(282,13): warning C4101: 'imgW' : variable locale non référencée
   Project1.vcxproj -> C:\Users\lharispe\Documents\GitHub\steganographie\Project1\x64\Debug\Project1.exe

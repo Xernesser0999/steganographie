@@ -123,8 +123,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="fonctions.cpp" />
+    <ClCompile Include="HexDump.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="StegCodec.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HexDump.h" />
+    <ClInclude Include="StegCodec.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
