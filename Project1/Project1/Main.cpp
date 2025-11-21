@@ -16,9 +16,9 @@
 
 using namespace Gdiplus;
 
-// ################################
-// #########=- VARIABLES -=########
-// ################################
+// #######################
+// ####=- VARIABLES -=####
+// #######################
 int xsize = 1500;
 int ysize = 1000;
 int xpos = 0;
@@ -29,9 +29,9 @@ std::wstring g_currentFilePath = L"";
 std::wstring g_hiddenMessage = L"";
 HWND g_hEditMessage = nullptr;  // Handle pour le champ de texte du message caché
 
-// ################################
-// ###########=- MAIN -=###########
-// ################################
+// ####################
+// #####=- MAIN -=#####
+// ####################
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow)
@@ -126,32 +126,32 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
     {
-        // ############## CASE #############
-        // ##########=- DESTROY -=##########
-        // #################################
+        // ####### CASE ########
+        // ####=- DESTROY -=####
+        // #####################
     case WM_DESTROY:                            // Stop program if window is closed
         if (pImage) { delete pImage; pImage = nullptr; }
         PostQuitMessage(0);
         return 0;
-        // ############## CASE #############
-        // ############=- SIZE -=###########
-        // #################################
+        // ######## CASE #######
+        // ######=- SIZE -=#####
+        // #####################
     case WM_SIZE:
         xsize = LOWORD(lParam);                 // Get the X size of the window
         ysize = HIWORD(lParam);                 // Get the Y size of the window
         InvalidateRect(hwnd, nullptr, TRUE);       // Force a repaint
         break;
-        // ############## CASE #############
-        // ############=- MOVE -=###########
-        // #################################
+        // ######## CASE #######
+        // ######=- MOVE -=#####
+        // #####################
     case WM_MOVE:
         xpos = (int)(short)LOWORD(lParam);      // Get the X position of the window
         ypos = (int)(short)HIWORD(lParam);      // Get the Y position of the window
         InvalidateRect(hwnd, nullptr, TRUE);       // Force a repaint
         break;
-        // ############## CASE #############
-        // ##########=- COMMAND -=##########
-        // #################################
+        // ######## CASE #######
+        // ####=- COMMAND -=####
+        // #####################
 
     case WM_COMMAND:
         if (LOWORD(wParam) == 1) {  // Button "Add a file"
@@ -236,46 +236,65 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 }
             }
         }
-        else if (LOWORD(wParam) == 2) {  // Button "Add a comment"
+        // Handle button click: "Add a comment"
+        else if (LOWORD(wParam) == 2) {
+            // Check if a file is loaded
             if (g_currentFilePath.empty()) {
-                MessageBox(hwnd, L"No image loaded yet. Please load an image first with button {Add a file}.",
+                MessageBox(hwnd,
+                    L"No image loaded yet. Please load an image first with button {Add a file}.",
                     L"Error", MB_OK | MB_ICONERROR);
                 break;
             }
 
-            // Récupérer le texte depuis le champ de texte
+            // Get user text from the edit control
             wchar_t userText[256] = { 0 };
             GetWindowText(g_hEditMessage, userText, 256);
 
+            // Ensure the user entered something
             if (wcslen(userText) == 0) {
-                MessageBox(hwnd, L"Please enter a message in the text field before saving.",
+                MessageBox(hwnd,
+                    L"Please enter a message in the text field before saving.",
                     L"Error", MB_OK | MB_ICONWARNING);
                 break;
             }
 
+            // Load file into memory
             size_t fileSize = 0;
             unsigned char* fileData = StegCodec::LoadFileToArray(g_currentFilePath.c_str(), fileSize);
 
             if (fileData) {
+                // Find a safe position to insert data
                 size_t insertPos = StegCodec::FindSafeInsertionPosition(fileData, fileSize);
-                delete[] fileData;
+                delete[] fileData; // free buffer
 
+                // Build output file path with "_modified" suffix
                 std::wstring inputPath = g_currentFilePath;
                 size_t lastDot = inputPath.find_last_of(L'.');
                 std::wstring outputPath = inputPath.substr(0, lastDot) + L"_modified" + inputPath.substr(lastDot);
 
-                if (StegCodec::InsertFFFeAndSave(g_currentFilePath.c_str(), outputPath.c_str(), insertPos, userText)) {
+                // Try to insert FF FE + user text and save
+                if (StegCodec::InsertFFFeAndSave(g_currentFilePath.c_str(),
+                    outputPath.c_str(),
+                    insertPos,
+                    userText)) {
+                    // Success message
                     wchar_t msg[512];
-                    wsprintf(msg, L"FF FE sequence + text successfully inserted!\n\nFile saved: %s\n\nPosition: %d bytes\n\nInserted text: %s",
+                    wsprintf(msg,
+                        L"FF FE sequence + text successfully inserted!\n\n"
+                        L"File saved: %s\n\nPosition: %d bytes\n\nInserted text: %s",
                         outputPath.c_str(), (int)insertPos, userText);
                     MessageBox(hwnd, msg, L"Success", MB_OK | MB_ICONINFORMATION);
                 }
                 else {
-                    MessageBox(hwnd, L"Failed to insert data or save file.", L"Error", MB_OK | MB_ICONERROR);
+                    // Failure message
+                    MessageBox(hwnd,
+                        L"Failed to insert data or save file.",
+                        L"Error", MB_OK | MB_ICONERROR);
                 }
             }
         }
         break;
+
 
     case WM_PAINT:
     {
