@@ -1,4 +1,9 @@
 # Stéganographie - C/CPP - WIN32
+## Groupe :
+- Line
+- Mael
+- Mattéo
+
 ## Utilisation :
 L'application permet d'insérer un méssage caché dans une image.  
 les fichier pris en compte sont :  
