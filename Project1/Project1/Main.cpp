@@ -79,7 +79,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow)
         nullptr
     );
 
-    // Label pour le champ de texte
+    // Chat box's label
     CreateWindow(
         L"STATIC",
         L"Secret message:",
@@ -91,7 +91,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow)
         nullptr
     );
 
-    // Champ de texte éditable pour le message caché
+    // Chat box in the window to type the text
     g_hEditMessage = CreateWindowEx(
         WS_EX_CLIENTEDGE,
         L"EDIT",
@@ -133,6 +133,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         if (pImage) { delete pImage; pImage = nullptr; }
         PostQuitMessage(0);
         return 0;
+
         // ######## CASE #######
         // ######=- SIZE -=#####
         // #####################
@@ -141,6 +142,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         ysize = HIWORD(lParam);                 // Get the Y size of the window
         InvalidateRect(hwnd, nullptr, TRUE);       // Force a repaint
         break;
+
         // ######## CASE #######
         // ######=- MOVE -=#####
         // #####################
@@ -149,10 +151,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         ypos = (int)(short)HIWORD(lParam);      // Get the Y position of the window
         InvalidateRect(hwnd, nullptr, TRUE);       // Force a repaint
         break;
+
         // ######## CASE #######
         // ####=- COMMAND -=####
         // #####################
-
     case WM_COMMAND:
         if (LOWORD(wParam) == 1) {  // Button "Add a file"
             OPENFILENAME ofn;
@@ -198,7 +200,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
                     wchar_t buffer[512];
                     if (foundFFFE) {
-                        // ====> EXTRAIRE LE MESSAGE CACHÉ
+                        // Extract hidden message
                         std::wstring hiddenMessage = StegCodec::ExtractHiddenMessage(rawData, rawSize);
 
                         if (!hiddenMessage.empty()) {
@@ -236,7 +238,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 }
             }
         }
-        // Handle button click: "Add a comment"
+        // button : "Add a comment"
         else if (LOWORD(wParam) == 2) {
             // Check if a file is loaded
             if (g_currentFilePath.empty()) {
@@ -267,7 +269,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 size_t insertPos = StegCodec::FindSafeInsertionPosition(fileData, fileSize);
                 delete[] fileData; // free buffer
 
-                // Build output file path with "_modified" suffix
+                // Add "_modified" at the end of the name
                 std::wstring inputPath = g_currentFilePath;
                 size_t lastDot = inputPath.find_last_of(L'.');
                 std::wstring outputPath = inputPath.substr(0, lastDot) + L"_modified" + inputPath.substr(lastDot);

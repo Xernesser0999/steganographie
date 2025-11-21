@@ -4,8 +4,8 @@
 #include <cstring>
 
 // Extracts a hidden message from a buffer if it contains the marker 0xFF 0xFE.
-// The next two bytes after the marker encode the message length.
-// Each character is stored as one byte, encoded by adding 3.
+// The next two bytes : message length.
+// Each character is stored as one byte, encoded by adding 3 (caesar).
 std::wstring StegCodec::ExtractHiddenMessage(const unsigned char* buffer, size_t size) {
     for (size_t i = 0; i < size - 1; ++i) {
         if (buffer[i] == 0xFF && buffer[i + 1] == 0xFE) {
@@ -24,10 +24,10 @@ std::wstring StegCodec::ExtractHiddenMessage(const unsigned char* buffer, size_t
             }
         }
     }
-    return L""; // no marker found
+    return L""; // no marker
 }
 
-// Checks if the buffer contains the marker 0xFF 0xFE.
+// Checks if the buffer contains the marker FF FE.
 bool StegCodec::ContainsFFFE(const unsigned char* buffer, size_t size) {
     for (size_t i = 0; i < size - 1; ++i) {
         if (buffer[i] == 0xFF && buffer[i + 1] == 0xFE) return true;
@@ -36,8 +36,8 @@ bool StegCodec::ContainsFFFE(const unsigned char* buffer, size_t size) {
 }
 
 // Chooses a safe insertion position for hidden data.
-// If file starts with JPEG header (FF D8), insert near the beginning (150 bytes in).
-// Otherwise, insert roughly in the middle.
+// If file starts with (FF D8), insert near the beginning (150 bytes in).
+// Else, insert in the middle.
 size_t StegCodec::FindSafeInsertionPosition(const unsigned char* buffer, size_t size) {
     if (size > 2 && buffer[0] == 0xFF && buffer[1] == 0xD8) {
         return (size > 150) ? 150 : (size / 2);
@@ -45,7 +45,7 @@ size_t StegCodec::FindSafeInsertionPosition(const unsigned char* buffer, size_t 
     return size / 2;
 }
 
-// Loads a file into memory as a byte array.
+// Loads a file into memory as byte array.
 unsigned char* StegCodec::LoadFileToArray(const wchar_t* filename, size_t& size) {
     std::ifstream file(filename, std::ios::binary);
     if (!file) {
@@ -62,7 +62,7 @@ unsigned char* StegCodec::LoadFileToArray(const wchar_t* filename, size_t& size)
 }
 
 // Inserts a hidden message into a file at a given position and saves to a new file.
-// Message is stored as: [FF FE][length(2 bytes)][encoded text].
+// Message is stored as: [FF FE][length][hidden message].
 bool StegCodec::InsertFFFeAndSave(const wchar_t* inputFile, const wchar_t* outputFile,
     size_t insertPos, const wchar_t* userText) {
     // Load original file
@@ -91,7 +91,7 @@ bool StegCodec::InsertFFFeAndSave(const wchar_t* inputFile, const wchar_t* outpu
     // Ensure insertion position is valid
     if (insertPos > originalSize) insertPos = originalSize;
 
-    // Convert wchar_t text to single-byte ASCII with +3 encoding
+    // Convert text to  ASCII ( +3 encoding )
     size_t textLen = wcslen(userText);
     char* asciiText = new char[textLen + 1];
     for (size_t i = 0; i < textLen; ++i) {
@@ -101,7 +101,7 @@ bool StegCodec::InsertFFFeAndSave(const wchar_t* inputFile, const wchar_t* outpu
     asciiText[textLen] = '\0';
     size_t textBytes = textLen;
 
-    // Build new buffer with marker + length + text inserted
+    // new buffer with marker + length + text inserted
     size_t newSize = originalSize + 4 + textBytes;
     unsigned char* newData = new unsigned char[newSize];
     memcpy(newData, originalData, insertPos);

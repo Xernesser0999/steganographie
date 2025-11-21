@@ -3,7 +3,7 @@
 #include <iomanip>
 
 // Converts a byte buffer into a hex string.
-// Marks [FF FE] if that sequence is found (UTF?16 BOM).
+// Marks [FF FE] if that sequence is found.
 std::wstring HexDump::BufferToHex(const unsigned char* buffer, size_t size, bool& foundFFFE) {
     std::wstringstream ss;   // Build wide string output
     foundFFFE = false;
@@ -18,7 +18,7 @@ std::wstring HexDump::BufferToHex(const unsigned char* buffer, size_t size, bool
             i++; // skip next byte
         }
         else {
-            // Print byte as two?digit hex
+            // Print byte as two digit hex
             ss << std::hex << std::setw(2) << std::setfill(L'0') << val << L" ";
         }
 
