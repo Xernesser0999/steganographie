@@ -184,7 +184,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     InvalidateRect(hwnd, nullptr, TRUE);
                     g_currentFilePath = szFile;
                 }
-
+                //_______________________________________________________________________________________________________________________________________________________________
                 // Also load the raw file in memory
                 size_t rawSize = 0;
                 unsigned char* rawData = StegCodec::LoadFileToArray(szFile, rawSize);
