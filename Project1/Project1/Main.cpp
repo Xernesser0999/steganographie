@@ -298,65 +298,65 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         break;
 
 
-    case WM_PAINT:{
+        case WM_PAINT:{
 
-        int imgW;   // Initialize image size | Horizontal
-        int imgH;   // Initialize image size | Vertical
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hwnd, &ps);    // Create an HDC object
-        Graphics graphics(hdc);             // Create a Graphics object
+            int imgW;   // Initialize image size | Horizontal
+            int imgH;   // Initialize image size | Vertical
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hwnd, &ps);    // Create an HDC object
+            Graphics graphics(hdc);             // Create a Graphics object
 
-        // =-> BACKGROUND
-        HBRUSH hBrush = CreateSolidBrush(RGB(27, 27, 27));   // Background color
-        FillRect(hdc, &ps.rcPaint, hBrush);                  // Apply the color
-        DeleteObject(hBrush);   // Delete the brush
+            // =-> BACKGROUND
+            HBRUSH hBrush = CreateSolidBrush(RGB(27, 27, 27));   // Background color
+            FillRect(hdc, &ps.rcPaint, hBrush);                  // Apply the color
+            DeleteObject(hBrush);   // Delete the brush
 
-        // =-> TEXT
-        SetTextColor(hdc, RGB(255, 255, 255));  // Text color
-        SetBkColor(hdc, RGB(0, 0, 0));          // Black background
-        SetBkMode(hdc, OPAQUE);                 // Visible background
-        wchar_t buffer[100];                    // Array containing a character string forming text
+            // =-> TEXT
+            SetTextColor(hdc, RGB(255, 255, 255));  // Text color
+            SetBkColor(hdc, RGB(0, 0, 0));          // Black background
+            SetBkMode(hdc, OPAQUE);                 // Visible background
+            wchar_t buffer[100];                    // Array containing a character string forming text
 
-        // =-> IMAGE
-        if (pImage) {   // If an image is loaded:
-            RECT rcClient;
-            GetClientRect(hwnd, &rcClient);
-            int clientWidth = rcClient.right - rcClient.left;
-            int clientHeight = rcClient.bottom - rcClient.top;
+            // =-> IMAGE
+            if (pImage) {   // If an image is loaded:
+                RECT rcClient;
+                GetClientRect(hwnd, &rcClient);
+                int clientWidth = rcClient.right - rcClient.left;
+                int clientHeight = rcClient.bottom - rcClient.top;
 
-            int imgW = pImage->GetWidth();  // Vertical size of the window
-            int imgH = pImage->GetHeight(); // Horizontal size of the window
-            double imgRatio = (double)imgW / imgH;                  // Calculate image ratio
-            double winRatio = (double)clientWidth / clientHeight;   // Calculate window ratio
-            std::wstring fileName = g_currentFilePath.substr(g_currentFilePath.find_last_of(L"\\") + 1);
+                int imgW = pImage->GetWidth();  // Vertical size of the window
+                int imgH = pImage->GetHeight(); // Horizontal size of the window
+                double imgRatio = (double)imgW / imgH;                  // Calculate image ratio
+                double winRatio = (double)clientWidth / clientHeight;   // Calculate window ratio
+                std::wstring fileName = g_currentFilePath.substr(g_currentFilePath.find_last_of(L"\\") + 1);
 
-            int drawW, drawH;
-            if (winRatio > imgRatio) {                  // Adjust image size according to horizontal window size
-                drawH = clientHeight;
-                drawW = (int)(clientHeight * imgRatio);
+                int drawW, drawH;
+                if (winRatio > imgRatio) {                  // Adjust image size according to horizontal window size
+                    drawH = clientHeight;
+                    drawW = (int)(clientHeight * imgRatio);
+                }
+                else {
+                    drawW = clientWidth;                    // Adjust image size according to vertical window size
+                    drawH = (int)(clientWidth / imgRatio);
+                }
+
+                int offsetX = (clientWidth - drawW) / 2;    // X offset of the image
+                int offsetY = (clientHeight - drawH) / 2;   // Y offset of the image
+
+                graphics.DrawImage(pImage, offsetX, offsetY, drawW, drawH);
+                wsprintf(buffer, L"Image size: %d bytes", g_rawSize);       // Put image size in bytes in buffer
+                TextOut(hdc, 5, 60, buffer, wcslen(buffer));                // Display image size in bytes
+                wsprintf(buffer, L"Image size: %d x %d pixels", imgW, imgH);  // Put size in pixels in buffer
+                TextOut(hdc, 5, 80, buffer, wcslen(buffer));                // Display image size in pixels
+                wsprintf(buffer, L"File name: %s", fileName.c_str());
+                TextOut(hdc, 5, 100, buffer, wcslen(buffer));
             }
-            else {
-                drawW = clientWidth;                    // Adjust image size according to vertical window size
-                drawH = (int)(clientWidth / imgRatio);
-            }
 
-            int offsetX = (clientWidth - drawW) / 2;    // X offset of the image
-            int offsetY = (clientHeight - drawH) / 2;   // Y offset of the image
-
-            graphics.DrawImage(pImage, offsetX, offsetY, drawW, drawH);
-            wsprintf(buffer, L"Image size: %d bytes", g_rawSize);       // Put image size in bytes in buffer
-            TextOut(hdc, 5, 60, buffer, wcslen(buffer));                // Display image size in bytes
-            wsprintf(buffer, L"Image size: %d x %d pixels", imgW, imgH);  // Put size in pixels in buffer
-            TextOut(hdc, 5, 80, buffer, wcslen(buffer));                // Display image size in pixels
-            wsprintf(buffer, L"File name: %s", fileName.c_str());
-            TextOut(hdc, 5, 100, buffer, wcslen(buffer));
+            wsprintf(buffer, L"Window size: %d x %d  Position: %d x %d", xsize, ysize, xpos, ypos);    // Text put in buffer
+            TextOut(hdc, 5, 40, buffer, wcslen(buffer));    // Display text
+            EndPaint(hwnd, &ps);                            // "End" the display
+            return 0;
         }
-
-        wsprintf(buffer, L"Window size: %d x %d  Position: %d x %d", xsize, ysize, xpos, ypos);    // Text put in buffer
-        TextOut(hdc, 5, 40, buffer, wcslen(buffer));    // Display text
-        EndPaint(hwnd, &ps);                            // "End" the display
-        return 0;
-    }
     }
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
