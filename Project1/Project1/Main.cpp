@@ -34,8 +34,8 @@ HWND g_hEditMessage = nullptr;  // Handle pour le champ de texte du message cach
 // ####################
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow)
-{
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow){
+
     GdiplusStartupInput gdiplusStartupInput;
     ULONG_PTR gdiplusToken;
     GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
@@ -298,8 +298,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         break;
 
 
-    case WM_PAINT:
-    {
+    case WM_PAINT:{
+
         int imgW;   // Initialize image size | Horizontal
         int imgH;   // Initialize image size | Vertical
         PAINTSTRUCT ps;
